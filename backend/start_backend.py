@@ -11,7 +11,7 @@ import uvicorn
 
 APP_IMPORT_PATH = "backend.app:app"
 DEFAULT_HOST = "0.0.0.0"
-DEFAULT_PORT = 5000
+DEFAULT_PORT = 5002
 
 
 # Ensure the project root is on sys.path so "backend" imports resolve even when
