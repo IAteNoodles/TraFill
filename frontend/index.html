@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- User Registration Section -->
+        <div id="user-section" class="section">
+            <h1>Welcome to Tracking System</h1>
+            <div class="card">
+                <h2>Enter Your Details</h2>
+                <form id="user-form">
+                    <div class="form-group">
+                        <label for="member-name">Name *</label>
+                        <input type="text" id="member-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="club">Club *</label>
+                        <select id="club" required>
+                            <option value="">Select Club</option>
+                            <option value="The Big O">The Big O</option>
+                            <option value="Nature Watch">Nature Watch</option>
+                            <option value="8x8">8x8</option>
+                            <option value="Acharya Gaming Club">Acharya Gaming Club</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Continue</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Application Section -->
+        <div id="app-section" class="section" style="display: none;">
+            <div class="header">
+                <div>
+                    <h1>Tracking System</h1>
+                    <p class="user-info">Logged in as: <strong id="logged-user"></strong> | Club: <strong id="logged-club"></strong></p>
+                </div>
+                <button id="logout-btn" class="btn btn-secondary">Logout</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="entry">New Entry</button>
+                <button class="tab-btn" data-tab="list">Entries List</button>
+                <button class="tab-btn" data-tab="stats">Statistics</button>
+            </div>
+
+            <!-- Entry Form Tab -->
+            <div id="entry-tab" class="tab-content active">
+                <!-- Mini Stats Widget -->
+                <div class="mini-stats" id="mini-stats">
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-value" id="mini-stat-total">-</div>
+                        <div class="mini-stat-label">Your Total Entries</div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-value" id="mini-stat-week">-</div>
+                        <div class="mini-stat-label">This Week</div>
+                    </div>
+                    <div class="mini-stat-card">
+                        <div class="mini-stat-value" id="mini-stat-rank">-</div>
+                        <div class="mini-stat-label">Your Rank</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>Add New Entry</h2>
+                    <form id="entry-form">
+                        <div class="form-group">
+                            <label for="company">Company *</label>
+                            <input type="text" id="company" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="opportunity-type">Type</label>
+                            <input type="text" id="opportunity-type" placeholder="e.g., Internship, Job, Partnership">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-person">Contact Person Name</label>
+                            <input type="text" id="contact-person">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="linkedin">LinkedIn</label>
+                                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/...">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" placeholder="+91 1234567890">
+                            </div>
+                        </div>
+
+                        <p class="note">* At least one contact method (Email, LinkedIn, or Phone) is required</p>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="status">Status *</label>
+                                <select id="status" required>
+                                    <option value="Yet to contact" selected>Yet to contact</option>
+                                    <option value="In progress">In progress</option>
+                                    <option value="Rejected">Rejected</option>
+                                    <option value="Requested on LinkedIn">Requested on LinkedIn</option>
+                                    <option value="Requested on mail">Requested on mail</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="entry-date">Date *</label>
+                                <input type="date" id="entry-date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="status-notes-group" style="display: none;">
+                            <label for="status-notes">Status Notes *</label>
+                            <textarea id="status-notes" rows="3" placeholder="Please specify the status details"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Submit Entry</button>
+                            <button type="reset" class="btn btn-secondary">Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- List Tab -->
+            <div id="list-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Entries List</h2>
+                        <button id="export-entries-btn" class="btn btn-secondary">📥 Export CSV</button>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="filters">
+                        <div class="form-group">
+                            <label for="filter-name">Filter by Name</label>
+                            <input type="text" id="filter-name" placeholder="Enter member name">
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-company">Filter by Company</label>
+                            <input type="text" id="filter-company" placeholder="Enter company name">
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-club">Filter by Club</label>
+                            <select id="filter-club">
+                                <option value="">All Clubs</option>
+                                <option value="The Big O">The Big O</option>
+                                <option value="Nature Watch">Nature Watch</option>
+                                <option value="8x8">8x8</option>
+                                <option value="Acharya Gaming Club">Acharya Gaming Club</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-type">Filter by Type</label>
+                            <input type="text" id="filter-type" placeholder="e.g., Internship">
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-status">Filter by Status</label>
+                            <select id="filter-status">
+                                <option value="">All Statuses</option>
+                                <option value="Yet to contact">Yet to contact</option>
+                                <option value="In progress">In progress</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Requested on LinkedIn">Requested on LinkedIn</option>
+                                <option value="Requested on mail">Requested on mail</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-start-date">Start Date</label>
+                            <input type="date" id="filter-start-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-end-date">End Date</label>
+                            <input type="date" id="filter-end-date">
+                        </div>
+                        <button id="apply-filters" class="btn btn-primary">Apply Filters</button>
+                        <button id="clear-filters" class="btn btn-secondary">Clear</button>
+                    </div>
+
+                    <!-- Entries Table -->
+                    <div class="table-container">
+                        <table id="entries-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Member</th>
+                                    <th>Club</th>
+                                    <th>Company</th>
+                                    <th>Type</th>
+                                    <th>Contact Person</th>
+                                    <th>Contact Info</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="entries-tbody">
+                                <tr>
+                                    <td colspan="9" class="no-data">No entries found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Tab -->
+            <div id="stats-tab" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Statistics Dashboard</h2>
+                        <button id="export-stats-btn" class="btn btn-secondary">📥 Export JSON</button>
+                    </div>
+                    
+                    <!-- Stats Filters -->
+                    <div class="filters stats-filters">
+                        <div class="form-group">
+                            <label for="stats-filter-club">Filter by Club</label>
+                            <select id="stats-filter-club">
+                                <option value="">All Clubs</option>
+                                <option value="The Big O">The Big O</option>
+                                <option value="Nature Watch">Nature Watch</option>
+                                <option value="8x8">8x8</option>
+                                <option value="Acharya Gaming Club">Acharya Gaming Club</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="stats-filter-member">Filter by Member</label>
+                            <input type="text" id="stats-filter-member" placeholder="Enter member name">
+                        </div>
+                        <div class="form-group">
+                            <label for="stats-filter-start">Start Date</label>
+                            <input type="date" id="stats-filter-start">
+                        </div>
+                        <div class="form-group">
+                            <label for="stats-filter-end">End Date</label>
+                            <input type="date" id="stats-filter-end">
+                        </div>
+                        <button id="apply-stats-filters" class="btn btn-primary">Apply Filters</button>
+                        <button id="clear-stats-filters" class="btn btn-secondary">Clear</button>
+                    </div>
+                    
+                    <div id="stats-container">
+                        <!-- Summary Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h3>Total Entries</h3>
+                                <p class="stat-value" id="total-entries">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Recent (7 days)</h3>
+                                <p class="stat-value" id="recent-entries">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>This Month</h3>
+                                <p class="stat-value" id="month-entries">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Avg per Member</h3>
+                                <p class="stat-value" id="avg-per-member">0</p>
+                            </div>
+                        </div>
+
+                        <!-- Status Distribution -->
+                        <div class="chart-container">
+                            <h3>📊 Status Distribution</h3>
+                            <div id="status-chart"></div>
+                        </div>
+
+                        <!-- Timeline Chart -->
+                        <div class="chart-container">
+                            <h3>📈 Daily Activity (Last 30 Days)</h3>
+                            <div id="timeline-chart"></div>
+                        </div>
+
+                        <!-- Club Performance -->
+                        <div class="chart-container">
+                            <h3>🏆 Club Performance</h3>
+                            <div id="club-performance-table"></div>
+                        </div>
+
+                        <!-- Member Contributions -->
+                        <div class="chart-container">
+                            <h3>👥 Member Contributions (Top 20)</h3>
+                            <div id="member-contributions-table"></div>
+                        </div>
+
+                        <!-- Club Distribution -->
+                        <div class="chart-container">
+                            <h3>🎯 Club Distribution</h3>
+                            <div id="club-chart"></div>
+                        </div>
+
+                        <!-- Contact Methods -->
+                        <div class="chart-container">
+                            <h3>📞 Contact Methods Used</h3>
+                            <div id="contact-chart"></div>
+                        </div>
+
+                        <!-- Top Companies -->
+                        <div class="chart-container">
+                            <h3>🏢 Top Companies (Top 15)</h3>
+                            <div id="company-chart"></div>
+                        </div>
+
+                        <!-- Opportunity Types -->
+                        <div class="chart-container">
+                            <h3>💼 Opportunity Types</h3>
+                            <div id="type-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Status Update Modal -->
+    <div id="status-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="status-modal-close" class="modal-close">&times;</span>
+            <h3>Update Status</h3>
+            <form id="status-update-form">
+                <input type="hidden" id="status-entry-id">
+                <div class="form-group">
+                    <label for="status-update-select">Status</label>
+                    <select id="status-update-select" required>
+                        <option value="Yet to contact">Yet to contact</option>
+                        <option value="In progress">In progress</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Requested on LinkedIn">Requested on LinkedIn</option>
+                        <option value="Requested on mail">Requested on mail</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="form-group" id="status-update-notes-group" style="display: none;">
+                    <label for="status-update-notes">Notes *</label>
+                    <textarea id="status-update-notes" rows="3" placeholder="Enter status notes"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" id="status-modal-cancel" class="btn btn-secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Keyboard Shortcuts Help -->
+    <div class="shortcuts-hint">
+        <button id="shortcuts-toggle" class="shortcuts-btn" title="Keyboard Shortcuts">⌨️</button>
+        <div id="shortcuts-panel" class="shortcuts-panel" style="display: none;">
+            <h3>Keyboard Shortcuts</h3>
+            <ul>
+                <li><kbd>Ctrl+S</kbd> - Submit Entry Form</li>
+                <li><kbd>Esc</kbd> - Clear Entry Form</li>
+                <li><kbd>Ctrl+1</kbd> - New Entry Tab</li>
+                <li><kbd>Ctrl+2</kbd> - Entries List Tab</li>
+                <li><kbd>Ctrl+3</kbd> - Statistics Tab</li>
+            </ul>
+            <p class="shortcuts-note">Auto-save is active - your form is saved every 15 seconds</p>
+        </div>
+    </div>
+    
+    <script>
+        // Shortcuts panel toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.getElementById('shortcuts-toggle');
+            const panel = document.getElementById('shortcuts-panel');
+            
+            if (toggle && panel) {
+                toggle.addEventListener('click', () => {
+                    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+                });
+                
+                // Close panel when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.shortcuts-hint')) {
+                        panel.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
